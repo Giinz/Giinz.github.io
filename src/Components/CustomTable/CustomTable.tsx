@@ -1,5 +1,6 @@
 import type { PaginationProps } from 'antd'
 import { Table } from 'antd'
+import styles from './CustomTable.module.scss'
 
 type Props = {
   pagination: PaginationProps
@@ -123,7 +124,7 @@ const CustomTable = ({ pagination = {}, scroll = {}, totalTicket, totalMoney, ..
         ...scroll
       }}
       {...props}
-      className='table-custom'
+      className={styles.customTable}
       size='small'
       style={{
         ...props.style

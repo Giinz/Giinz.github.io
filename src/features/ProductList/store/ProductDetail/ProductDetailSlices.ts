@@ -36,6 +36,13 @@ export const productDetailSlices = createSlice({
     updateProductDetailSuccess: (state, action: PayloadAction<IProduct>) => {
       state.productDetail = action.payload
       state.isLoading = false
+    },
+    createProduct: (state, _action: PayloadAction<IProduct>) => {
+      state.isLoading = true
+    },
+    createProductSuccess: (state, action: PayloadAction<IProduct>) => {
+      state.productDetail = action.payload
+      state.isLoading = false
     }
   }
 })
@@ -45,7 +52,9 @@ export const {
   getProductDetailSuccess,
   getProductDetail,
   updateProductDetail,
-  updateProductDetailSuccess
+  updateProductDetailSuccess,
+  createProductSuccess,
+  createProduct
 } = productDetailSlices.actions
 
 export default productDetailSlices.reducer

@@ -1,17 +1,25 @@
-import { Form, InputNumber } from 'antd'
+import { Form, Input, InputNumber } from 'antd'
 import { IProduct } from '../../type/IProduct'
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean
   dataIndex: string
-  title: any
   inputType: 'number' | 'text'
   record: IProduct
   index: number
   children: React.ReactNode
 }
 
-const EditableCell: React.FC<EditableCellProps> = ({ editing, dataIndex, title, record, children, ...restProps }) => {
+const EditableCell: React.FC<EditableCellProps> = ({
+  editing,
+  dataIndex,
+  title,
+  children,
+  inputType,
+  ...restProps
+}) => {
+  const inputNode = inputType === 'number' ? <InputNumber /> : <Input />
+
   return (
     <td {...restProps}>
       {editing ? (
@@ -25,7 +33,7 @@ const EditableCell: React.FC<EditableCellProps> = ({ editing, dataIndex, title, 
             }
           ]}
         >
-          {<InputNumber />}
+          {inputNode}
         </Form.Item>
       ) : (
         children

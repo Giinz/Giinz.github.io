@@ -29,7 +29,7 @@ const initialState: IInitState = {
   productList: [],
   categoryList: [],
   isLoading: false,
-  productListPagination: { pageSize: 10, current: 1, total: 0 }
+  productListPagination: { pageSize: 100, current: 1, total: 0 }
 }
 
 export const productListSlices = createSlice({

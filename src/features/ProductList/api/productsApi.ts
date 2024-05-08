@@ -14,6 +14,9 @@ const productsApi = {
   },
   getListCategory(params: ListParams): Promise<IProduct[]> {
     return axiosClient.post('products/GetListCategory', params)
+  },
+  createProduct(product: IProduct): Promise<IProduct> {
+    return axiosClient.post('products/createProduct', product)
   }
 }
 

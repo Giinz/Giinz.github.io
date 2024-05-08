@@ -53,8 +53,8 @@ const RootLayout = () => {
             {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
           </Button>
           <Menu
-            defaultSelectedKeys={['1']}
-            defaultOpenKeys={['sub1']}
+            defaultSelectedKeys={['productList']}
+            defaultOpenKeys={['productList']}
             mode='inline'
             theme='dark'
             items={items}

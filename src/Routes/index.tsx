@@ -1,7 +1,7 @@
 import App from '@/App'
 import Order from '@/features/Order/pages/Order'
 import ProductList from '@/features/ProductList/pages/ProductList'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom'
 
 const router = createBrowserRouter([
   {
@@ -10,6 +10,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: 'productList',
+        index: true,
         element: <ProductList />
       },
       {
