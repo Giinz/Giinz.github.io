@@ -1,7 +1,7 @@
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 
 const axiosClient = axios.create({
-  baseURL: 'http://www.kemapi.somee.com/api/',
+  baseURL: 'https://www.kemapi.somee.com/api/',
   headers: {
     'Content-Type': 'application/json'
   }
