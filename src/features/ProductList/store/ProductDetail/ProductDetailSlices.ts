@@ -5,6 +5,7 @@ import { IProduct } from '../../type/IProduct'
 export interface IInitState {
   productDetail?: IProduct | null
   isLoading: boolean
+  errorMessage?: string
 }
 export interface IActionGetListProduct {
   page: number
@@ -20,17 +21,20 @@ export const productDetailSlices = createSlice({
   name: 'product',
   initialState: initialState,
   reducers: {
-    requestProductDetailFailure: (state) => {
+    requestProductDetailFailure: (state, action: PayloadAction<string>) => {
       state.isLoading = false
+      state.errorMessage = action.payload
     },
 
     getProductDetail: (state, _action: PayloadAction<IProduct>) => {
+      state.errorMessage = undefined
       state.isLoading = true
     },
     getProductDetailSuccess: (state, action: PayloadAction<IProduct>) => {
       state.productDetail = action.payload
     },
     updateProductDetail: (state, _action: PayloadAction<IProduct>) => {
+      state.errorMessage = undefined
       state.isLoading = true
     },
     updateProductDetailSuccess: (state, action: PayloadAction<IProduct>) => {
@@ -38,10 +42,17 @@ export const productDetailSlices = createSlice({
       state.isLoading = false
     },
     createProduct: (state, _action: PayloadAction<IProduct>) => {
+      state.errorMessage = undefined
       state.isLoading = true
     },
-    createProductSuccess: (state, action: PayloadAction<IProduct>) => {
-      state.productDetail = action.payload
+    createProductSuccess: (state, _action: PayloadAction<IProduct>) => {
+      state.isLoading = false
+    },
+    deleteProduct: (state, _action: PayloadAction<string>) => {
+      state.errorMessage = undefined
+      state.isLoading = true
+    },
+    deleteProductSuccess: (state) => {
       state.isLoading = false
     }
   }
@@ -54,7 +65,9 @@ export const {
   updateProductDetail,
   updateProductDetailSuccess,
   createProductSuccess,
-  createProduct
+  createProduct,
+  deleteProduct,
+  deleteProductSuccess
 } = productDetailSlices.actions
 
 export default productDetailSlices.reducer

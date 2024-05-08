@@ -1,10 +1,10 @@
 import CustomTable from '@/Components/CustomTable/CustomTable'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { CheckCircleOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
-import { Col, Form, Modal, Row, Tooltip } from 'antd'
+import { Col, Form, Modal, Row, Tooltip, message } from 'antd'
 import { debounce } from 'lodash'
 import React, { useEffect, useState } from 'react'
-import { createProduct, updateProductDetail } from '../store/ProductDetail/ProductDetailSlices'
+import { createProduct, deleteProduct, updateProductDetail } from '../store/ProductDetail/ProductDetailSlices'
 import {
   IProductPagination,
   getListCategory,
@@ -26,6 +26,7 @@ export interface columnsType {
 const ProductList = () => {
   const dispatch = useAppDispatch()
   const { productList, productListPagination, isLoading } = useAppSelector((state) => state.product.productList)
+  const { errorMessage } = useAppSelector((state) => state.product.productDetail)
   const [keySearchProduct, setKeySearchProduct] = useState<string>('')
   const [keySearchCategory, setKeySearchCategory] = useState<string>('')
   const [isAddingProduct, setIsAddingProduct] = useState(false)
@@ -157,6 +158,7 @@ const ProductList = () => {
                 cursor: 'pointer',
                 color: 'rgb(255, 0, 0)'
               }}
+              onClick={() => handleDeleteProduct(record)}
             />
           </Tooltip>
         </Row>
@@ -177,6 +179,24 @@ const ProductList = () => {
       })
     }
   })
+
+  const handleDeleteProduct = (product: IProduct) => {
+    dispatch(deleteProduct(product.id))
+
+    if (errorMessage) {
+      return message.error(errorMessage)
+    }
+    dispatch(
+      getProductList({
+        page: productListPagination.current,
+        pageSize: productListPagination.pageSize,
+        current: productListPagination.current,
+        keySearchProduct,
+        keySearchCategory
+      })
+    )
+    return message.success('Xóa thành công')
+  }
   const handleTableChange = (Pagination: IProductPagination) => {
     if (productListPagination.pageSize !== Pagination.pageSize) {
       dispatch(
@@ -196,9 +216,22 @@ const ProductList = () => {
   }
 
   const handleCreateProduct = async () => {
-    const newProductValue = await formCreateProduct.validateFields()
-    dispatch(createProduct(newProductValue))
-    setIsAddingProduct(false)
+    try {
+      const newProductValue = await formCreateProduct.validateFields()
+      dispatch(createProduct(newProductValue))
+      dispatch(
+        getProductList({
+          page: productListPagination.current,
+          pageSize: productListPagination.pageSize,
+          current: productListPagination.current,
+          keySearchProduct,
+          keySearchCategory
+        })
+      )
+      setIsAddingProduct(false)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   useEffect(() => {

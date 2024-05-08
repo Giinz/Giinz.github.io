@@ -24,8 +24,8 @@ const FormAddProduct = ({ formCreateProduct }: FormAddProductProps) => {
             filterOption={(inputValue, option) =>
               option?.value ? option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1 : false
             }
-            onSelect={() => {
-              formCreateProduct.getFieldsValue
+            onSelect={(value) => {
+              formCreateProduct.setFieldValue('category', value)
             }}
             allowClear
             placeholder='Chọn nhóm hàng'

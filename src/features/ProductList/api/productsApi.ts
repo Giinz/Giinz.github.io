@@ -17,6 +17,9 @@ const productsApi = {
   },
   createProduct(product: IProduct): Promise<IProduct> {
     return axiosClient.post('products/createProduct', product)
+  },
+  deleteProduct(id: string): Promise<IProduct> {
+    return axiosClient.delete(`products/${id}`)
   }
 }
 
