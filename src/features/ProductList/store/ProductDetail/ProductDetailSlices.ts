@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { IProduct } from '../../type/IProduct'
+import { IProduct } from '../../types/IProduct'
 
 export interface IInitState {
   productDetail?: IProduct | null

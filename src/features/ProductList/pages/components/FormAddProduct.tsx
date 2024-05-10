@@ -1,6 +1,6 @@
 import { useAppSelector } from '@/store/hooks'
 import { AutoComplete, Col, Form, FormInstance, Input, InputNumber } from 'antd'
-import { IProduct } from '../../type/IProduct'
+import { IProduct } from '../../types/IProduct'
 
 interface FormAddProductProps {
   formCreateProduct: FormInstance<IProduct>

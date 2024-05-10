@@ -3,7 +3,7 @@ import { Table } from 'antd'
 import styles from './CustomTable.module.scss'
 
 type Props = {
-  pagination: PaginationProps
+  pagination?: PaginationProps
   scroll?: {
     x?: number
     y?: number
@@ -11,9 +11,10 @@ type Props = {
   totalTicket?: number
   totalMoney?: number
   headerbig?: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [props: string]: any
 }
-const CustomTable = ({ pagination = {}, scroll = {}, totalTicket, totalMoney, ...props }: Props) => {
+const CustomTable = ({ pagination, scroll = {}, totalTicket, totalMoney, ...props }: Props) => {
   const handleCustomPaginationLayout = (mapper: {
     total: number
     sizeChanger: JSX.Element

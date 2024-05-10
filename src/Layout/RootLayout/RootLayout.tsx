@@ -36,7 +36,7 @@ const items: MenuItem[] = [
 ]
 
 const RootLayout = () => {
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState(true)
   const navigate = useNavigate()
   const handleSelectMenuItem = ({ key }: { key: string }) => {
     navigate(key)
@@ -69,7 +69,7 @@ const RootLayout = () => {
         <Content>
           <Outlet />
         </Content>
-        <Footer style={{ background: '#fff' }}>Footer</Footer>
+        {/* <Footer style={{ background: '#fff' }}>Footer</Footer> */}
       </Layout>
     </Layout>
   )

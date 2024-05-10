@@ -1,7 +1,7 @@
 import { PayloadAction } from '@reduxjs/toolkit'
 import { call, put, takeEvery } from 'redux-saga/effects'
 import productsApi from '../../api/productsApi'
-import { IProduct } from '../../type/IProduct'
+import { IProduct } from '../../types/IProduct'
 import {
   createProduct,
   createProductSuccess,

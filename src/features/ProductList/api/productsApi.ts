@@ -1,5 +1,5 @@
 import axiosClient from '@/api/axiosClient'
-import { IProduct } from '@/features/ProductList/type/IProduct'
+import { IProduct } from '@/features/ProductList/types/IProduct'
 import { ListParams } from '@/types/common'
 
 const productsApi = {

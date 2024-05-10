@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { ICategory, IProduct, IResponseCategoryList, IResponseProductList } from '../../type/IProduct'
+import { ICategory, IProduct, IResponseCategoryList, IResponseProductList } from '../../types/IProduct'
 
 export interface IProductPagination {
   pageSize?: number

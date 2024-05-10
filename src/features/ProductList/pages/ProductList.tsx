@@ -1,7 +1,7 @@
 import CustomTable from '@/Components/CustomTable/CustomTable'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { CheckCircleOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons'
-import { Col, Form, Modal, Row, Tooltip, message } from 'antd'
+import { Button, Col, Flex, Form, Modal, Row, Tooltip, message } from 'antd'
 import { debounce } from 'lodash'
 import React, { useEffect, useState } from 'react'
 import { createProduct, deleteProduct, updateProductDetail } from '../store/ProductDetail/ProductDetailSlices'
@@ -12,7 +12,7 @@ import {
   updateProductListPagination,
   updateProductListState
 } from '../store/ProductList/ProductListSlice'
-import { IProduct } from '../type/IProduct'
+import { IProduct } from '../types/IProduct'
 import EditableCell from './components/EditableCell'
 import FormAddProduct from './components/FormAddProduct'
 import SearchInput from './components/SearchInput'
@@ -236,6 +236,12 @@ const ProductList = () => {
 
   useEffect(() => {
     dispatch(
+      updateProductListPagination({
+        current: 1,
+        pageSize: 20
+      })
+    )
+    dispatch(
       getProductList({
         page: productListPagination.current,
         pageSize: productListPagination.pageSize,
@@ -269,11 +275,16 @@ const ProductList = () => {
       <Form form={form} component={false}>
         <Col span={24} style={{ height: '100%', overflow: 'scroll' }}>
           {' '}
-          <SearchInput
-            handleSearch={handleSearch}
-            setIsAddingProduct={setIsAddingProduct}
-            setKeySearchCategory={setKeySearchCategory}
-          />
+          <Row style={{ padding: '10px 20px', margin: 0 }} justify={'space-between'} gutter={16}>
+            <SearchInput handleSearch={handleSearch} setKeySearchCategory={setKeySearchCategory} />
+            <Col span={4}>
+              <Flex justify='center' align='center' style={{ height: '100%' }}>
+                <Button type='primary' onClick={() => setIsAddingProduct(true)}>
+                  Thêm mới
+                </Button>
+              </Flex>
+            </Col>
+          </Row>
           <CustomTable
             style={{ width: '100%' }}
             components={{

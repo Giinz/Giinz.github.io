@@ -1,16 +1,18 @@
 import { Form, Input, InputNumber } from 'antd'
-import { IProduct } from '../../type/IProduct'
 
 interface EditableCellProps extends React.HTMLAttributes<HTMLElement> {
   editing: boolean
   dataIndex: string
   inputType: 'number' | 'text'
-  record: IProduct
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  record: any
   index: number
   children: React.ReactNode
+  toggleEdit?: () => void
 }
 
 const EditableCell: React.FC<EditableCellProps> = ({
+  record,
   editing,
   dataIndex,
   title,
@@ -24,12 +26,12 @@ const EditableCell: React.FC<EditableCellProps> = ({
     <td {...restProps}>
       {editing ? (
         <Form.Item
-          name={dataIndex}
+          name={dataIndex + '_' + record?.id}
           style={{ margin: 0 }}
           rules={[
             {
               required: true,
-              message: `Please Input ${title}!`
+              message: `${title} không được để trống!`
             }
           ]}
         >

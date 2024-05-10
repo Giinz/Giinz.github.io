@@ -1,7 +1,7 @@
 import { PayloadAction } from '@reduxjs/toolkit'
 import { call, put, takeLatest } from 'redux-saga/effects'
 import productsApi from '../../api/productsApi'
-import { IResponseCategoryList, IResponseProductList } from '../../type/IProduct'
+import { IResponseCategoryList, IResponseProductList } from '../../types/IProduct'
 import {
   IActionGetListProduct,
   getListCategory,
