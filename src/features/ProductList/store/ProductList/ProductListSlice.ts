@@ -60,7 +60,7 @@ export const productListSlices = createSlice({
       state.isLoading = false
     },
     getProductListSuccess: (state, action: PayloadAction<IResponseProductList>) => {
-      state.productList = action.payload.list.map((item) => ({ ...item, isEditing: false }))
+      state.productList = action.payload.list.map((item) => ({ ...item, isEditing: false, isSelected: false }))
       state.productListPagination = {
         ...state.productListPagination,
         total: action.payload.totalCount

@@ -17,10 +17,25 @@ const EditableCell: React.FC<EditableCellProps> = ({
   dataIndex,
   title,
   children,
+  toggleEdit,
   inputType,
   ...restProps
 }) => {
-  const inputNode = inputType === 'number' ? <InputNumber /> : <Input />
+  const inputNode =
+    inputType === 'number' ? (
+      <InputNumber
+        type='number'
+        controls={false}
+        style={{ width: '100%' }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            toggleEdit?.()
+          }
+        }}
+      />
+    ) : (
+      <Input style={{ width: '100%' }} />
+    )
 
   return (
     <td {...restProps}>

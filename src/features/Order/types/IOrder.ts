@@ -10,4 +10,15 @@ export interface IInitStateOrder {
   orderList: IOrder[]
   isLoading: boolean
   errorMessage?: string
+  totalPrice: number
+  discount: number
+  priceType: number
+}
+export interface IOrderState {
+  orderList?: IOrder[]
+  isLoading?: boolean
+  errorMessage?: string
+  totalPrice?: number
+  discount?: number
+  priceType?: number
 }

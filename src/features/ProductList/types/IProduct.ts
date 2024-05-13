@@ -7,6 +7,7 @@ export interface IProduct {
   price2: number
   price3: number
   isEditing: boolean
+  isSelected: boolean
 }
 export interface ICategory {
   category: string

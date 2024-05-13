@@ -1,12 +1,11 @@
-import { addOrderToList } from '@/features/Order/orderSlice'
-import { IOrder } from '@/features/Order/types/IOrder'
 import SearchInput from '@/features/ProductList/pages/components/SearchInput'
 import { getProductList, updateProductListPagination } from '@/features/ProductList/store/ProductList/ProductListSlice'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { Button, Col, Divider, List, Row, Skeleton, Typography } from 'antd'
+import { Col, Divider, List, Row, Skeleton } from 'antd'
 import { debounce } from 'lodash'
 import React, { useEffect, useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
+import ProductItem from './ProductItem'
 
 const ProductTab: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -92,30 +91,7 @@ const ProductTab: React.FC = () => {
             dataSource={productList}
             renderItem={(item) => (
               <List.Item key={item.id}>
-                <List.Item.Meta
-                  // avatar={<Avatar src={item.picture.large} />}
-                  title={<Typography.Text style={{ fontSize: '16px' }}>{item.name}</Typography.Text>}
-                  description={
-                    <Typography.Text strong style={{ fontSize: '18px' }}>
-                      {item.price1?.toLocaleString('vi-VN')}
-                    </Typography.Text>
-                  }
-                />
-                <Button
-                  type='primary'
-                  onClick={() => {
-                    const orderItem: IOrder = {
-                      ...item,
-                      quantity: 1,
-                      discount: 0,
-                      total: item.price1,
-                      isEditing: false
-                    }
-                    dispatch(addOrderToList(orderItem))
-                  }}
-                >
-                  Lựa chọn
-                </Button>
+                <ProductItem item={item} />
               </List.Item>
             )}
           />

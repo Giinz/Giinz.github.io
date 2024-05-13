@@ -1,27 +1,19 @@
 import CustomTable from '@/Components/CustomTable/CustomTable'
-import { updateCurrentOrder } from '@/features/Order/orderSlice'
+import { renderPrice } from '@/features/Order/Utils/renderPrice'
+import { updateCurrentOrder, updateOrderDiscount, updateOrderPriceType } from '@/features/Order/orderSlice'
 import { IOrder } from '@/features/Order/types/IOrder'
 import EditableCell from '@/features/ProductList/pages/components/EditableCell'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { Col, Form, InputNumber, Row, Select, Typography } from 'antd'
 import { useState } from 'react'
+import TotalTag from '../TotalTag/TotalTag'
 
 const OrderTab = () => {
-  const { orderList } = useAppSelector((state) => state.order)
+  const { orderList, priceType } = useAppSelector((state) => state.order)
   const dispatch = useAppDispatch()
   const [form] = Form.useForm()
-  const [priceType, setPriceType] = useState<number>(1)
   const [discount, setDiscount] = useState<number>(0)
-  const renderPrice = (record: IOrder): number => {
-    if (priceType === 1) {
-      return record.price1
-    } else if (priceType === 2) {
-      return record.price2
-    } else if (priceType === 3) {
-      return record.price3
-    }
-    return 0
-  }
+
   const columns = [
     {
       title: 'Tên hàng',
@@ -33,37 +25,14 @@ const OrderTab = () => {
       title: 'Đơn Giá',
       key: 'price',
       render: (_: unknown, record: IOrder) => {
-        return renderPrice(record)?.toLocaleString('vi-VN')
+        return renderPrice(priceType, record)?.toLocaleString('vi-VN')
       }
     },
     {
       title: 'Số lượng',
       dataIndex: 'quantity',
-      editable: true
-      // render: (_: unknown, record: IOrder) => {
-      //   if (record.isEditing) {
-      //     form.setFieldValue(`quantity_${record.id}`, record.quantity)
-      //     return (
-      //       <Input
-      //         type='number'
-      //         defaultValue={record.quantity}
-      //         onChange={() => {
-      //           console.log('e')
-      //         }}
-      //       />
-      //     )
-      //   } else {
-      //     return (
-      //       <Typography.Text
-      //         onClick={() => {
-      //           dispatch(updateCurrentOrder({ ...record, isEditing: true }))
-      //         }}
-      //       >
-      //         {record.quantity}
-      //       </Typography.Text>
-      //     )
-      //   }
-      // }
+      editable: true,
+      className: 'editableCell'
     },
     {
       title: 'Chiết khấu',
@@ -77,7 +46,10 @@ const OrderTab = () => {
       dataIndex: 'total',
       key: 'total',
       render: (_: unknown, record: IOrder) => {
-        return (renderPrice(record) * record.quantity).toLocaleString('vi-VN')
+        const totalRowPrice =
+          renderPrice(priceType, record) * record.quantity -
+          (renderPrice(priceType, record) * record.quantity * discount) / 100
+        return totalRowPrice.toLocaleString('vi-VN')
       }
     }
   ]
@@ -92,7 +64,22 @@ const OrderTab = () => {
         title: col.title,
         inputType: col.dataIndex === 'quantity' ? 'number' : 'text',
         dataIndex: col.dataIndex,
-        editing: record.isEditing
+        editing: record.isEditing,
+        onClick: () => {
+          form.setFieldValue(`quantity_${record.id}`, record.quantity)
+          dispatch(updateCurrentOrder({ ...record, isEditing: true }))
+        },
+        toggleEdit: () => {
+          const quanlityChanged = form.getFieldValue(`quantity_${record.id}`)
+          dispatch(
+            updateCurrentOrder({
+              ...record,
+              quantity: quanlityChanged,
+              isEditing: false,
+              total: renderPrice(priceType, record) * quanlityChanged
+            })
+          )
+        }
       })
     }
   })
@@ -110,7 +97,9 @@ const OrderTab = () => {
                 </Typography.Text>
                 <Select
                   defaultValue={1}
-                  onChange={(value) => setPriceType(value)}
+                  onChange={(value) => {
+                    dispatch(updateOrderPriceType(value))
+                  }}
                   options={[
                     {
                       value: 1,
@@ -137,7 +126,8 @@ const OrderTab = () => {
                 <InputNumber
                   value={discount}
                   onChange={(e: number | null) => {
-                    e ? setDiscount(e) : setDiscount(0)
+                    dispatch(updateOrderDiscount(e ?? 0))
+                    setDiscount(e ?? 0)
                   }}
                   defaultValue={0}
                   type='number'
@@ -160,21 +150,12 @@ const OrderTab = () => {
         sticky={{
           offsetHeader: 0
         }}
-        onRow={(record: IOrder) => ({
-          onClick: () => {
-            form.setFieldValue(`quantity_${record.id}`, record.quantity)
-            dispatch(updateCurrentOrder({ ...record, isEditing: true }))
-          },
-          onBlur: () => {
-            const quanlityChanged = form.getFieldValue(`quantity_${record.id}`)
-            dispatch(updateCurrentOrder({ ...record, quantity: quanlityChanged, isEditing: false }))
-          }
-        })}
         columns={mergedColumns}
         dataSource={orderList}
         rowKey='id'
       />
       {/* <Table dataSource={orderList} columns={columns} bordered pagination={false} /> */}
+      <TotalTag />
     </Form>
   )
 }
