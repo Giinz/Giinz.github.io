@@ -7,7 +7,7 @@ function App() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    navigate('productList')
+    navigate('order')
   }, [navigate])
 
   return (

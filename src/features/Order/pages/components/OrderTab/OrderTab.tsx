@@ -16,16 +16,30 @@ import {
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { DeleteOutlined } from '@ant-design/icons'
 import { Button, Col, Flex, Form, InputNumber, Row, Select, Tooltip, Typography } from 'antd'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import { useReactToPrint } from 'react-to-print'
+import PrintOrder from '../PrintOrder/PrintOrder'
 import TotalTag from '../TotalTag/TotalTag'
 
 const OrderTab = () => {
+  const contentToPrint = useRef<HTMLElement | null>(null)
+
   const { orderList, priceType } = useAppSelector((state) => state.order)
   const { productList } = useAppSelector((state) => state.product.productList)
   const dispatch = useAppDispatch()
   const [form] = Form.useForm()
   const [discount, setDiscount] = useState<number>(0)
+  const [isPrinting, setisPrinting] = useState(false)
 
+  const handlePrint = useReactToPrint({
+    content: () => contentToPrint.current,
+    onBeforePrint: () => {
+      setisPrinting(true)
+    },
+    onAfterPrint: () => {
+      setisPrinting(false)
+    }
+  })
   const handleDeleteOrderItem = (record: IOrder) => {
     dispatch(updateDetailProductInList({ ...record, isSelected: false }))
     dispatch(deleteOrderItem(record))
@@ -211,7 +225,10 @@ const OrderTab = () => {
         rowKey='id'
       />
       {/* <Table dataSource={orderList} columns={columns} bordered pagination={false} /> */}
-      <TotalTag />
+      <TotalTag handlePrint={handlePrint} />
+      <div style={{ display: 'none' }}>
+        <PrintOrder ref={contentToPrint} mergedColumns={mergedColumns} />
+      </div>
     </Form>
   )
 }

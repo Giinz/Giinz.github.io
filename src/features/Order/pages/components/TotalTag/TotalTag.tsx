@@ -2,7 +2,7 @@ import { useAppSelector } from '@/store/hooks'
 import { Button, Col, Row } from 'antd'
 import styles from './TotalTagStyle.module.scss'
 
-const TotalTag = () => {
+const TotalTag = ({ handlePrint }: { handlePrint: () => void }) => {
   const { orderList, totalPrice, discount } = useAppSelector((state) => state.order)
   return (
     <Col span={24} className={styles.priceTag}>
@@ -19,7 +19,7 @@ const TotalTag = () => {
         <p>{((totalPrice * (100 - discount)) / 100).toLocaleString('vi-VN')}</p>
       </Row>
       <Row justify={'end'}>
-        <Button size='large' type='primary'>
+        <Button size='large' type='primary' onClick={() => handlePrint()}>
           In hóa đơn
         </Button>
       </Row>
