@@ -30,10 +30,15 @@ export const OrderSlice = createSlice({
         return item
       })
       state.totalPrice = state.orderList.reduce((total, item) => total + item.total, 0)
+    },
+    deleteOrderItem: (state, action: PayloadAction<IOrder>) => {
+      const newOrderList = state.orderList.filter((item) => item.id !== action.payload.id)
+      state.orderList = newOrderList
     }
   }
 })
 
-export const { addOrderToList, updateCurrentOrder, updateOrderDiscount, updateOrderPriceType } = OrderSlice.actions
+export const { addOrderToList, updateCurrentOrder, updateOrderDiscount, updateOrderPriceType, deleteOrderItem } =
+  OrderSlice.actions
 
 export default OrderSlice.reducer

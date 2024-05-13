@@ -1,10 +1,17 @@
 import CustomTable from '@/Components/CustomTable/CustomTable'
 import { renderPrice } from '@/features/Order/Utils/renderPrice'
-import { updateCurrentOrder, updateOrderDiscount, updateOrderPriceType } from '@/features/Order/orderSlice'
+import {
+  deleteOrderItem,
+  updateCurrentOrder,
+  updateOrderDiscount,
+  updateOrderPriceType
+} from '@/features/Order/orderSlice'
 import { IOrder } from '@/features/Order/types/IOrder'
 import EditableCell from '@/features/ProductList/pages/components/EditableCell'
+import { updateDetailProductInList } from '@/features/ProductList/store/ProductList/ProductListSlice'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
-import { Col, Form, InputNumber, Row, Select, Typography } from 'antd'
+import { DeleteOutlined } from '@ant-design/icons'
+import { Col, Form, InputNumber, Row, Select, Tooltip, Typography } from 'antd'
 import { useState } from 'react'
 import TotalTag from '../TotalTag/TotalTag'
 
@@ -13,6 +20,11 @@ const OrderTab = () => {
   const dispatch = useAppDispatch()
   const [form] = Form.useForm()
   const [discount, setDiscount] = useState<number>(0)
+
+  const handleDeleteOrderItem = (record: IOrder) => {
+    dispatch(updateDetailProductInList({ ...record, isSelected: false }))
+    dispatch(deleteOrderItem(record))
+  }
 
   const columns = [
     {
@@ -50,6 +62,25 @@ const OrderTab = () => {
           renderPrice(priceType, record) * record.quantity -
           (renderPrice(priceType, record) * record.quantity * discount) / 100
         return totalRowPrice.toLocaleString('vi-VN')
+      }
+    },
+    {
+      title: 'Thao tác',
+      dataIndex: 'operation',
+      align: 'center',
+      render: (_: unknown, record: IOrder) => {
+        return (
+          <Tooltip title='Xóa sản phẩm'>
+            <DeleteOutlined
+              style={{
+                fontSize: '20px',
+                cursor: 'pointer',
+                color: 'rgb(255, 0, 0)'
+              }}
+              onClick={() => handleDeleteOrderItem(record)}
+            />
+          </Tooltip>
+        )
       }
     }
   ]
