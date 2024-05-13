@@ -34,11 +34,23 @@ export const OrderSlice = createSlice({
     deleteOrderItem: (state, action: PayloadAction<IOrder>) => {
       const newOrderList = state.orderList.filter((item) => item.id !== action.payload.id)
       state.orderList = newOrderList
+    },
+    deleteEntireOrder: (state) => {
+      state.orderList = []
+      state.totalPrice = 0
+      state.discount = 0
+      state.priceType = 1
     }
   }
 })
 
-export const { addOrderToList, updateCurrentOrder, updateOrderDiscount, updateOrderPriceType, deleteOrderItem } =
-  OrderSlice.actions
+export const {
+  addOrderToList,
+  updateCurrentOrder,
+  updateOrderDiscount,
+  updateOrderPriceType,
+  deleteOrderItem,
+  deleteEntireOrder
+} = OrderSlice.actions
 
 export default OrderSlice.reducer

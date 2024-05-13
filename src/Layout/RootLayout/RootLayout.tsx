@@ -10,7 +10,7 @@ import { Button, Flex, Layout, Menu, MenuProps } from 'antd'
 import { useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 type MenuItem = Required<MenuProps>['items'][number]
-const { Header, Footer, Sider, Content } = Layout
+const { Header, Sider, Content } = Layout
 
 function getItem(
   label: React.ReactNode,
@@ -53,8 +53,8 @@ const RootLayout = () => {
             {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
           </Button>
           <Menu
-            defaultSelectedKeys={['productList']}
-            defaultOpenKeys={['productList']}
+            defaultSelectedKeys={['order']}
+            defaultOpenKeys={['order']}
             mode='inline'
             theme='dark'
             items={items}
