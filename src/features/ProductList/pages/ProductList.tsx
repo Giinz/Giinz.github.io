@@ -260,16 +260,6 @@ const ProductList = () => {
     keySearchCategory
   ])
 
-  useEffect(() => {
-    dispatch(
-      getListCategory({
-        page: 1,
-        pageSize: 1000,
-        current: 1000
-      })
-    )
-  }, [dispatch])
-
   return (
     <>
       <Form form={form} component={false}>

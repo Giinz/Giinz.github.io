@@ -1,0 +1,14 @@
+.priceTag {
+  margin-top: 10px;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 5px;
+  p {
+    font-size: 18px;
+  }
+  .priceTagRow {
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+  }
+}

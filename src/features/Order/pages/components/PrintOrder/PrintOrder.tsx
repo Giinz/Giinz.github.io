@@ -1,18 +1,65 @@
 import CustomTable from '@/Components/CustomTable/CustomTable'
-import EditableCell from '@/features/ProductList/pages/components/EditableCell'
+import { renderPrice } from '@/features/Order/Utils/renderPrice'
+import { IOrder } from '@/features/Order/types/IOrder'
 import { useAppSelector } from '@/store/hooks'
-import { Col, Flex, Layout, Row, Typography } from 'antd'
+import { Col, Flex, Row, Typography } from 'antd'
 import { forwardRef } from 'react'
 import styles from '../TotalTag/TotalTagStyle.module.scss'
 
-interface Props {
-  mergedColumns: any
-}
-const PrintOrder = forwardRef<HTMLElement, Props>(({ mergedColumns }, ref) => {
+interface Props {}
+const PrintOrder = forwardRef<HTMLElement, Props>((_props, ref) => {
   const { orderList, totalPrice, discount, priceType } = useAppSelector((state) => state.order)
-
+  const newColumn = [
+    {
+      title: 'Tên hàng',
+      width: '30%',
+      dataIndex: 'name',
+      key: 'name'
+    },
+    { title: 'Nhóm hàng', dataIndex: 'category', key: 'category', width: '10%' },
+    {
+      title: 'Đơn Giá',
+      width: '20%',
+      key: 'price',
+      render: (_: unknown, record: IOrder) => {
+        return renderPrice(priceType, record)?.toLocaleString('vi-VN')
+      }
+    },
+    {
+      title: 'Số lượng',
+      dataIndex: 'quantity',
+      width: '10%',
+      editable: true,
+      className: 'editableCell'
+    },
+    {
+      title: 'Chiết khấu',
+      key: 'discount',
+      align: 'center',
+      width: '10%',
+      render: () => {
+        return discount + '%'
+      }
+    },
+    {
+      title: 'Thành tiền',
+      dataIndex: 'total',
+      width: '30%',
+      key: 'total',
+      render: (_: unknown, record: IOrder) => {
+        const totalRowPrice =
+          renderPrice(priceType, record) * record.quantity -
+          (renderPrice(priceType, record) * record.quantity * discount) / 100
+        return totalRowPrice.toLocaleString('vi-VN')
+      }
+    }
+  ]
   return (
-    <Layout ref={ref} style={{ height: '100%' }}>
+    <main
+      ref={ref}
+      style={{ height: '100%', padding: '20px', width: '100%', position: 'absolute', zIndex: '-10000' }}
+      id='printOrder'
+    >
       <Col span={24}>
         <Row>
           <Col span={12}>
@@ -36,20 +83,7 @@ const PrintOrder = forwardRef<HTMLElement, Props>(({ mergedColumns }, ref) => {
           </Col>
         </Row>
       </Col>
-      <CustomTable
-        style={{ width: '100%' }}
-        components={{
-          body: {
-            cell: EditableCell
-          }
-        }}
-        sticky={{
-          offsetHeader: 0
-        }}
-        columns={mergedColumns}
-        dataSource={orderList}
-        rowKey='id'
-      />
+      <CustomTable style={{ width: '100%' }} columns={newColumn} dataSource={orderList} />
       <Col span={24} className={styles.priceTag}>
         <Row justify={'space-between'} align={'middle'} className={`${styles.totalPrice} ${styles.priceTagRow}`}>
           <p>Tổng tiền</p>
@@ -64,7 +98,7 @@ const PrintOrder = forwardRef<HTMLElement, Props>(({ mergedColumns }, ref) => {
           <p>{((totalPrice * (100 - discount)) / 100).toLocaleString('vi-VN')}</p>
         </Row>
       </Col>
-    </Layout>
+    </main>
   )
 })
 
