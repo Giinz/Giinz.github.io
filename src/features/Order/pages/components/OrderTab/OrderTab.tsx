@@ -146,13 +146,13 @@ const OrderTab = () => {
       <Form form={form}>
         <Col span={24}>
           <Row justify={'space-between'} style={{ marginBottom: '10px', width: '100%' }}>
-            <Col span={6}>
-              <Typography.Title level={3}>Đơn hàng</Typography.Title>
+            <Col span={5}>
+              <Typography.Title level={4}>Đơn hàng</Typography.Title>
             </Col>
-            <Col span={18}>
+            <Col span={19}>
               <Row style={{ width: '100%' }} justify={'space-between'}>
                 <Col span={8}>
-                  <Flex vertical align='center'>
+                  <Flex align='center'>
                     <Typography.Text strong style={{ marginRight: '10px' }}>
                       Đại lý
                     </Typography.Text>
@@ -180,7 +180,7 @@ const OrderTab = () => {
                   </Flex>
                 </Col>
                 <Col span={8}>
-                  <Flex align={'center'} vertical>
+                  <Flex align={'center'}>
                     <Typography.Text strong style={{ marginRight: '10px' }}>
                       Chiết khấu
                     </Typography.Text>
@@ -225,6 +225,7 @@ const OrderTab = () => {
               cell: EditableCell
             }
           }}
+          scroll={{ y: 250 }}
           sticky={{
             offsetHeader: 0
           }}
@@ -240,7 +241,7 @@ const OrderTab = () => {
           }}
         />
       </Form>
-      <PrintOrder ref={contentToPrint} />F{' '}
+      <PrintOrder ref={contentToPrint} />
       <Modal
         title='Đặt tên hóa đơn'
         open={isModalOpen}
